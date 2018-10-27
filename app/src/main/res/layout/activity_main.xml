@@ -18,7 +18,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/screen2">
+        app:layout_constraintTop_toBottomOf="@+id/screen">
 
         <TableRow
             android:layout_width="match_parent"
@@ -257,7 +257,7 @@
     </TableLayout>
 
     <TextView
-        android:id="@+id/screen2"
+        android:id="@+id/screen"
         android:layout_width="357dp"
         android:layout_height="121dp"
         android:layout_marginStart="8dp"
@@ -267,6 +267,8 @@
         android:layout_marginRight="8dp"
         android:background="@android:color/darker_gray"
         android:text="@string/screenLabel"
+        android:textColor="@android:color/holo_red_light"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
