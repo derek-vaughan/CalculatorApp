@@ -1,10 +1,12 @@
 package derek.calculatorapp;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     // Objects for on-screen widgets:
@@ -117,8 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
         clearButton.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v){
-                screen.setText(null);
+            public void onClick(View v){screen.setText(null); // Clears all text from screen.
             }
         });
 
@@ -181,8 +182,34 @@ public class MainActivity extends AppCompatActivity {
         equalsButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                screen.append("=");
+                String userInput = screen.getText().toString();
+                screen.setText(solve(userInput));
             }
         });
+
+
+    }
+
+    public String solve(String userInput){
+        String operators[] = userInput.split("[0-9]+");
+        String operands[] = userInput.split("[+-]");
+        int answer = Integer.parseInt(operands[0]);
+
+        for(int i = 1; i < operands.length; i++){
+            if(operators[i].equals("+")){
+                answer += Integer.parseInt(operands[i]);
+            }
+            else{
+                answer -= Integer.parseInt(operands[i]);
+            }
+        }
+
+        /*
+        Context context = getApplicationContext();
+        Toast toast = Toast.makeText(context, answer, Toast.LENGTH_LONG);
+        toast.show();
+        */
+
+        return Integer.toString(answer);
     }
 }
