@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">CalculatorApp</string>
+    <string name="screenLabel" />
+    <string name="sevenLabel">7</string>
+    <string name="eightLabel">8</string>
+    <string name="nineLabel">9</string>
+    <string name="fourLabel">4</string>
+    <string name="fiveLabel">5</string>
+    <string name="sixLabel">6</string>
+    <string name="oneLabel">1</string>
+    <string name="twoLabel">2</string>
+    <string name="threeLabel">3</string>
+    <string name="zeroLabel">0</string>
+    <string name="dotLabel">.</string>
+    <string name="equalsLabel">=</string>
+    <string name="clearLabel">C</string>
+    <string name="minusLabel">-</string>
+    <string name="plusLabel">+</string>
+    <string name="divideLabel">/</string>
+    <string name="multiplyButton">*</string>
+    <string name="lParenLabel">(</string>
+    <string name="rParenLabel">)</string>
+    <string name="exponentLabel">^</string>
+    <string name="multiplyLabel">*</string>
+    <string name="minusButton">-</string>
+
+</resources>
