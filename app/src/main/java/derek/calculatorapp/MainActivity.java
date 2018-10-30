@@ -183,37 +183,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 String userInput = screen.getText().toString();
-                screen.setText(solve(userInput));
+                screen.setText(inToPost(userInput));
             }
         });
 
 
     }
 
-    public String solve(String userInput){
-        int finalAnswer = 0;
-        char ch;
-        String postfixInput = inToPost(userInput);
-        Stack<Character> stack = new Stack<Character>(); // Initialize a stack
-
-        for(int i = 0; i < postfixInput.length(); i++){
-            ch = postfixInput.charAt(i);
-
-            if(isOperand(ch)){
-                stack.push(ch);
-            }
-            else if(isOperator(ch)){
-                char temp1 = stack.pop();
-                char temp2 = stack.pop();
-            }
-        }
-
-        return Integer.toString(finalAnswer);
-    }
-
     public String inToPost(String userInput){
         char ch;
-        Stack<Character> stack = new Stack<Character>(); // Initialize a stack
+        Stack<Character> stack = new Stack<Character>(); // Create a stack
         StringBuffer postfixInput = new StringBuffer(userInput.length());
 
         for(int i = 0; i < userInput.length(); i++){
@@ -250,7 +229,38 @@ public class MainActivity extends AppCompatActivity {
             postfixInput.append(stack.pop());
         }
 
-        return postfixInput.toString();
+        String finalAnswer = solve(postfixInput.toString());
+
+        return finalAnswer;
+    }
+
+    public String solve(String userInput){
+        char ch;
+        String finalAnswer;
+        Stack<String> stack = new Stack<String>(); // Create a stack
+
+        for(int i = 0; i < userInput.length(); i++){
+            ch = userInput.charAt(i);
+
+            if(isOperand(ch)){
+                stack.push(Character.toString(ch));
+            }
+            else{
+                int tempOne = Integer.parseInt(stack.pop());
+                int tempTwo = Integer.parseInt(stack.pop());
+
+                if(ch == '+'){
+                    int sum = 0;
+                    sum = tempTwo + tempOne;
+
+                    stack.push(Integer.toString(sum));
+                }
+            }
+        }
+
+        finalAnswer = stack.pop();
+        return finalAnswer;
+
     }
 
     public boolean isOperator(char ch){
