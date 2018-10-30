@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
     // Objects for on-screen widgets:
@@ -191,25 +191,97 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String solve(String userInput){
-        String operators[] = userInput.split("[0-9]+");
-        String operands[] = userInput.split("[+-]");
-        int answer = Integer.parseInt(operands[0]);
+        int finalAnswer = 0;
+        char ch;
+        String postfixInput = inToPost(userInput);
+        Stack<Character> stack = new Stack<Character>(); // Initialize a stack
 
-        for(int i = 1; i < operands.length; i++){
-            if(operators[i].equals("+")){
-                answer += Integer.parseInt(operands[i]);
+        for(int i = 0; i < postfixInput.length(); i++){
+            ch = postfixInput.charAt(i);
+
+            if(isOperand(ch)){
+                stack.push(ch);
             }
-            else{
-                answer -= Integer.parseInt(operands[i]);
+            else if(isOperator(ch)){
+                char temp1 = stack.pop();
+                char temp2 = stack.pop();
             }
         }
 
-        /*
-        Context context = getApplicationContext();
-        Toast toast = Toast.makeText(context, answer, Toast.LENGTH_LONG);
-        toast.show();
-        */
+        return Integer.toString(finalAnswer);
+    }
 
-        return Integer.toString(answer);
+    public String inToPost(String userInput){
+        char ch;
+        Stack<Character> stack = new Stack<Character>(); // Initialize a stack
+        StringBuffer postfixInput = new StringBuffer(userInput.length());
+
+        for(int i = 0; i < userInput.length(); i++){
+            ch = userInput.charAt(i);
+
+            if(isOperand(ch)){
+                postfixInput.append(ch);
+            }
+            else if(ch == '('){
+                stack.push(ch);
+            }
+            else if(ch == ')'){
+                while(!stack.isEmpty() && stack.peek() != '('){
+                    postfixInput.append(stack.pop());
+                }
+
+                if(!stack.isEmpty() && stack.peek() != '('){
+                    return null;
+                }
+                else if(!stack.isEmpty()){
+                    stack.pop();
+                }
+            }
+            else if(isOperator(ch)){
+                if(!stack.isEmpty() && getPrecedence(ch) <= getPrecedence(stack.peek())){
+                    postfixInput.append(stack.pop());
+                }
+
+                stack.push(ch);
+            }
+        }
+
+        while(!stack.isEmpty()){
+            postfixInput.append(stack.pop());
+        }
+
+        return postfixInput.toString();
+    }
+
+    public boolean isOperator(char ch){
+        if(ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^' || ch == '(' || ch == ')'){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public boolean isOperand(char ch){
+        if(Character.isDigit(ch)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public int getPrecedence(char operand){
+        switch(operand){
+            case '+':
+            case '-':
+                return 1;
+            case '*':
+            case '/':
+                return 2;
+            case '^':
+                return 3;
+        }
+        return -1;
     }
 }
