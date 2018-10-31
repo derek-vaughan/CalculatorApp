@@ -1,7 +1,7 @@
 package derek.calculatorapp;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -46,122 +46,123 @@ public class MainActivity extends AppCompatActivity {
         equalsButton = (Button) findViewById(R.id.equalsButton);
 
         // On-click listeners for each button:
-        zeroButton.setOnClickListener(new View.OnClickListener(){
+        zeroButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 screen.append("0");
             }
         });
-        oneButton.setOnClickListener(new View.OnClickListener(){
+        oneButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 screen.append("1");
             }
         });
-        twoButton.setOnClickListener(new View.OnClickListener(){
+        twoButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 screen.append("2");
             }
         });
-        threeButton.setOnClickListener(new View.OnClickListener(){
+        threeButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 screen.append("3");
             }
         });
-        fourButton.setOnClickListener(new View.OnClickListener(){
+        fourButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 screen.append("4");
             }
         });
-        fiveButton.setOnClickListener(new View.OnClickListener(){
+        fiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 screen.append("5");
             }
         });
-        sixButton.setOnClickListener(new View.OnClickListener(){
+        sixButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 screen.append("6");
             }
         });
-        sevenButton.setOnClickListener(new View.OnClickListener(){
+        sevenButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 screen.append("7");
             }
         });
-        eightButton.setOnClickListener(new View.OnClickListener(){
+        eightButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 screen.append("8");
             }
         });
-        nineButton.setOnClickListener(new View.OnClickListener(){
+        nineButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 screen.append("9");
             }
         });
-        clearButton.setOnClickListener(new View.OnClickListener(){
+        clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){screen.setText(null);
+            public void onClick(View v) {
+                screen.setText(null);
             }
         });
-        lParenButton.setOnClickListener(new View.OnClickListener(){
+        lParenButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 screen.append("(");
             }
         });
-        rParenButton.setOnClickListener(new View.OnClickListener(){
+        rParenButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 screen.append(")");
             }
         });
-        exponentButton.setOnClickListener(new View.OnClickListener(){
+        exponentButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 screen.append("^");
             }
         });
-        multiplyButton.setOnClickListener(new View.OnClickListener(){
+        multiplyButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 screen.append("*");
             }
         });
-        divideButton.setOnClickListener(new View.OnClickListener(){
+        divideButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 screen.append("/");
             }
         });
-        plusButton.setOnClickListener(new View.OnClickListener(){
+        plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 screen.append("+");
             }
         });
-        minusButton.setOnClickListener(new View.OnClickListener(){
+        minusButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 screen.append("-");
             }
         });
-        dotButton.setOnClickListener(new View.OnClickListener(){
+        dotButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 screen.append(".");
             }
         });
-        equalsButton.setOnClickListener(new View.OnClickListener(){
+        equalsButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 String userInput = screen.getText().toString();
                 screen.setText(inToPost(userInput));
             }
@@ -176,77 +177,76 @@ public class MainActivity extends AppCompatActivity {
 
         for(int i = 0; i < inputLength; i++){
             ch = userInput.charAt(i);
-            while(ch == ' '){
-                i++;
+
+            if(ch == ' '){
+                // Do nothing
             }
+            else if(isOperand(ch) || ch == '.'){
+                postfixInput.append(ch);
+            }
+            else if(ch == '('){
+                stack.push(ch);
+            }
+            else if(ch == ')'){
+                while((!stack.isEmpty()) && (stack.peek() != '(')){
+                    postfixInput.append(stack.pop());
+                }
 
-            if(isOperand(ch)){
-                postfixInput.append(userInput.charAt(i));
-
-                if((i + 1) >= inputLength || (isOperator(userInput.charAt(i + 1)))){
-                    postfixInput.append(' ');
+                if(!stack.isEmpty()){
+                    stack.pop();
+                }
+                else{
+                    return "Error: Parentheses Mismatch!";
                 }
             }
-            else if(getPrecedence(ch) != 0) {
-                while ((!stack.isEmpty()) && (getPrecedence(stack.peek()) >= getPrecedence(ch)) && (stack.peek() != '(')) {
-                    postfixInput.append(stack.peek());
-                    postfixInput.append(' ');
-                    stack.pop();
+            else if(isOperator(ch)){
+                postfixInput.append(' ');
+
+                while((!stack.isEmpty()) && (getPrecedence(stack.peek()) >= getPrecedence(ch))){
+                    postfixInput.append(stack.pop());
                 }
 
                 stack.push(ch);
             }
-            else if(ch == '(') {
-                stack.push(ch);
-            }
-            else if (ch == ')') {
-                while (!stack.isEmpty() && stack.peek() != '(') {
-                    postfixInput.append(stack.peek());
-                    stack.pop();
-                }
-
-                stack.pop();
+            else{
+                return "Input Error!";
             }
         }
 
-        while (!stack.isEmpty()) {
+        while(!stack.isEmpty()){
             postfixInput.append(stack.pop());
-            postfixInput.append(' ');
         }
 
-        String finalAnswer = solve(postfixInput.toString());
-        //String finalAnswer = postfixInput.toString();
-        return finalAnswer;
+        String finalAnswer = postfixInput.toString();
+        return solve(finalAnswer);
     }
 
-    public String solve(String postfixExp){
+    public String solve(String postfixExp) {
         Stack<String> stack = new Stack<String>();
         char ch;
         int inputLength = postfixExp.length();
 
-        for(int i = 0; i < inputLength; i++){
+        for (int i = 0; i < inputLength; i++) {
             ch = postfixExp.charAt(i);
 
-            if(ch == ' '){
+            if (ch == ' ') {
                 // Do nothing, space found.
-            }
-            else if(isOperand(ch)){
+            } else if (isOperand(ch)) {
                 int n = 0; // This will eventually hold our final value.
 
-                while(isOperand(ch)){
-                    n = (n * 10) + (int)(ch - '0');
+                while (isOperand(ch)) {
+                    n = (n * 10) + (int) (ch - '0');
                     i++;
                     ch = postfixExp.charAt(i);
                 }
                 i--;
 
                 stack.push(Integer.toString(n));
-            }
-            else{
+            } else {
                 int tempOne = Integer.parseInt(stack.pop());
                 int tempTwo = Integer.parseInt(stack.pop());
 
-                switch(ch){
+                switch (ch) {
                     case '+':
                         stack.push(Integer.toString(tempTwo + tempOne));
                         break;
@@ -257,7 +257,11 @@ public class MainActivity extends AppCompatActivity {
                         stack.push(Integer.toString(tempTwo * tempOne));
                         break;
                     case '/':
-                        stack.push(Integer.toString(tempTwo / tempOne));
+                        if (tempOne == 0) {
+                            return "Error: Division by 0";
+                        } else {
+                            stack.push(Integer.toString(tempTwo / tempOne));
+                        }
                         break;
                     case '^':
                         stack.push(Double.toString(Math.pow(tempTwo, tempOne)));
@@ -270,26 +274,24 @@ public class MainActivity extends AppCompatActivity {
         return evaluation;
     }
 
-    public boolean isOperator(char ch){
-        if(ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^' || ch == '(' || ch == ')'){
+    public boolean isOperator(char ch) {
+        if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^' || ch == '(' || ch == ')') {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
-    public boolean isOperand(char ch){
-        if(Character.isDigit(ch)){
+    public boolean isOperand(char ch) {
+        if (Character.isDigit(ch)) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
-    public int getPrecedence(char operand){
-        switch(operand){
+    public int getPrecedence(char operand) {
+        switch (operand) {
             case '+':
             case '-':
                 return 1;
