@@ -1,3 +1,8 @@
+/*
+* Derek Vaughan
+* Simple Android Calculator Application
+* 30 October, 2018
+*/
 package derek.calculatorapp;
 
 import android.os.Bundle;
@@ -42,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         divideButton = (Button) findViewById(R.id.divideButton);
         plusButton = (Button) findViewById(R.id.plusButton);
         minusButton = (Button) findViewById(R.id.minusButton);
-        dotButton = (Button) findViewById(R.id.dotButton);
         equalsButton = (Button) findViewById(R.id.equalsButton);
 
         // On-click listeners for each button:
@@ -154,12 +158,6 @@ public class MainActivity extends AppCompatActivity {
                 screen.append("-");
             }
         });
-        dotButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                screen.append(".");
-            }
-        });
         equalsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,10 +167,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Infix -> Postfix Conversion Function:
     public String inToPost(String userInput){
-        // Pre-Check for Validation:
+        // Pre-Check for Valid Expression:
         if(!validate(userInput)){
-            return "Error!";
+           return "Error!";
         }
 
         StringBuffer postfixInput = new StringBuffer(userInput.length());
@@ -180,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
         char ch;
         int inputLength = userInput.length();
 
+        // Adaptation of the Shunting Yard Algorithm:
         for(int i = 0; i < inputLength; i++){
             ch = userInput.charAt(i);
 
@@ -226,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
         return solve(finalAnswer);
     }
 
+    // Solve function evaluates a postfix expression:
     public String solve(String postfixExp) {
         Stack<String> stack = new Stack<String>();
         char ch;
@@ -271,7 +272,8 @@ public class MainActivity extends AppCompatActivity {
                         }
                         break;
                     case '^':
-                        stack.push(Double.toString(Math.pow(tempTwo, tempOne)));
+                        int temp3 = (int)(Math.pow(tempTwo, tempOne));
+                        stack.push(Integer.toString(temp3));
                         break;
                 }
             }
@@ -281,6 +283,7 @@ public class MainActivity extends AppCompatActivity {
         return evaluation;
     }
 
+    // Validation function to check for correct input:
     public boolean validate(String userInput){
         int operatorCount = 0, leftParenCount = 0, rightParenCount = 0, inputLength = userInput.length();
         char ch;
@@ -291,7 +294,7 @@ public class MainActivity extends AppCompatActivity {
             if(ch == '('){
                 leftParenCount++;
             }
-            else if(ch == '0'){
+            else if(ch == ')'){
                 rightParenCount++;
             }
 
@@ -300,13 +303,18 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        if((operatorCount == 0) || (leftParenCount != rightParenCount) || isOperator(userInput.charAt(0))){
+        if((operatorCount == 0) || (leftParenCount != rightParenCount)){
             return false;
         }
 
-        return true;
+        else if(isOperator(userInput.charAt(0)) && (userInput.charAt(0) != '(')){
+            return false;
+        }
+
+        return true; // Validation Successful!
     }
 
+    // isOperator function returns true if the passed argument is a operator:
     public boolean isOperator(char ch) {
         if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^' || ch == '(' || ch == ')') {
             return true;
@@ -316,6 +324,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // isOperand function returns true if the passed argument is a operand (digit):
     public boolean isOperand(char ch) {
         if (Character.isDigit(ch)) {
             return true;
@@ -325,8 +334,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public int getPrecedence(char operand) {
-        switch (operand) {
+    /* getPrecendence function assigns each operator a precedence level according to
+       the order of operations: */
+    public int getPrecedence(char operator) {
+        switch (operator) {
             case '+':
             case '-':
                 return 1;

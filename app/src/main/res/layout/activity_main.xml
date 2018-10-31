@@ -223,18 +223,9 @@
                 android:typeface="normal" />
 
             <Button
-                android:id="@+id/dotButton"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="104dp"
-                android:layout_height="84dp"
-                android:background="@android:color/holo_blue_light"
-                android:text="@string/dotLabel"
-                android:textSize="24sp"
-                android:typeface="normal" />
-
-            <Button
                 android:id="@+id/equalsButton"
                 style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_span="2"
                 android:layout_width="wrap_content"
                 android:layout_height="84dp"
                 android:background="@android:color/holo_green_dark"
