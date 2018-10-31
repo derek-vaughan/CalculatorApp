@@ -1,0 +1,10 @@
+~Simple Android Calculator Application~
+How-To Setup Guide:
+*Android Studio is required to run this project.
+1. Download Source_Vaughan_Derek.zip and unzip it in desired location.
+2. Open up Android Studio, select "Open Project", from here find your newly unzipped folder and select it.
+3. After project is opened and finished automatically building, select "Run" -> "Run App" in the top menu.
+4. "Select Deployment Target" will open up. You will need to select "Create New Virtual Device".
+5. Select Pixel 2 XL for hardware, press next. Now select "Pie API Level 28", and download it.
+6. Select "Next" and "Finish". The Virtual Device will now open after a while of loading.
+7. CalculatorApp should open automatically, you are now free to use the app for any simple mathematics! Simply click/tap buttons.

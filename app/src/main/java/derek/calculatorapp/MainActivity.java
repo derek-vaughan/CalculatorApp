@@ -251,41 +251,42 @@ public class MainActivity extends AppCompatActivity {
                 stack.push(Integer.toString(n));
             }
             else {
-                int tempOne = Integer.parseInt(stack.pop());
-                int tempTwo = Integer.parseInt(stack.pop());
+                double tempOne = Double.parseDouble(stack.pop());
+                double tempTwo = Double.parseDouble(stack.pop());
 
                 switch (ch) {
                     case '+':
-                        stack.push(Integer.toString(tempTwo + tempOne));
+                        stack.push(Double.toString(tempTwo + tempOne));
                         break;
                     case '-':
-                        stack.push(Integer.toString(tempTwo - tempOne));
+                        stack.push(Double.toString(tempTwo - tempOne));
                         break;
                     case '*':
-                        stack.push(Integer.toString(tempTwo * tempOne));
+                        stack.push(Double.toString(tempTwo * tempOne));
                         break;
                     case '/':
                         if (tempOne == 0) {
                             return "Error: Division by 0";
                         } else {
-                            stack.push(Integer.toString(tempTwo / tempOne));
+                            stack.push(Double.toString(tempTwo / tempOne));
                         }
                         break;
                     case '^':
-                        int temp3 = (int)(Math.pow(tempTwo, tempOne));
-                        stack.push(Integer.toString(temp3));
+                        double temp3 = (double)(Math.pow(tempTwo, tempOne));
+                        stack.push(Double.toString(temp3));
                         break;
                 }
             }
         }
 
         String evaluation = stack.pop();
+
         return evaluation;
     }
 
     // Validation function to check for correct input:
     public boolean validate(String userInput){
-        int operatorCount = 0, leftParenCount = 0, rightParenCount = 0, inputLength = userInput.length();
+        int operandCount = 0, operatorCount = 0, leftParenCount = 0, rightParenCount = 0, inputLength = userInput.length();
         char ch;
 
         for(int i = 0; i < inputLength; i++){
@@ -301,9 +302,24 @@ public class MainActivity extends AppCompatActivity {
             if(isOperator(ch)){
                 operatorCount++;
             }
+            if(isOperand(ch)){
+                operandCount++;
+            }
         }
 
-        if((operatorCount == 0) || (leftParenCount != rightParenCount)){
+        for(int i = 0; i < inputLength - 1; i++){
+            char ch1 = userInput.charAt(i);
+            char ch2 = userInput.charAt(i + 1);
+            if(isOperator(ch1) && isOperator(ch2)){
+                return false;
+            }
+        }
+
+        if(operandCount == 1 && operatorCount == 1){
+            return false;
+        }
+
+        if((operandCount == 0) || (operatorCount == 0) || (leftParenCount != rightParenCount)){
             return false;
         }
 
