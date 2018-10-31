@@ -170,6 +170,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String inToPost(String userInput){
+        // Pre-Check for Validation:
+        if(!validate(userInput)){
+            return "Error!";
+        }
+
         StringBuffer postfixInput = new StringBuffer(userInput.length());
         Stack<Character> stack = new Stack<Character>();
         char ch;
@@ -196,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
                     stack.pop();
                 }
                 else{
-                    return "Error: Parentheses Mismatch!";
+                    return "Parentheses Error!";
                 }
             }
             else if(isOperator(ch)){
@@ -231,7 +236,8 @@ public class MainActivity extends AppCompatActivity {
 
             if (ch == ' ') {
                 // Do nothing, space found.
-            } else if (isOperand(ch)) {
+            }
+            else if (isOperand(ch)) {
                 int n = 0; // This will eventually hold our final value.
 
                 while (isOperand(ch)) {
@@ -242,7 +248,8 @@ public class MainActivity extends AppCompatActivity {
                 i--;
 
                 stack.push(Integer.toString(n));
-            } else {
+            }
+            else {
                 int tempOne = Integer.parseInt(stack.pop());
                 int tempTwo = Integer.parseInt(stack.pop());
 
@@ -274,10 +281,37 @@ public class MainActivity extends AppCompatActivity {
         return evaluation;
     }
 
+    public boolean validate(String userInput){
+        int operatorCount = 0, leftParenCount = 0, rightParenCount = 0, inputLength = userInput.length();
+        char ch;
+
+        for(int i = 0; i < inputLength; i++){
+            ch = userInput.charAt(i);
+
+            if(ch == '('){
+                leftParenCount++;
+            }
+            else if(ch == '0'){
+                rightParenCount++;
+            }
+
+            if(isOperator(ch)){
+                operatorCount++;
+            }
+        }
+
+        if((operatorCount == 0) || (leftParenCount != rightParenCount) || isOperator(userInput.charAt(0))){
+            return false;
+        }
+
+        return true;
+    }
+
     public boolean isOperator(char ch) {
         if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^' || ch == '(' || ch == ')') {
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }
@@ -285,7 +319,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean isOperand(char ch) {
         if (Character.isDigit(ch)) {
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }
@@ -301,6 +336,7 @@ public class MainActivity extends AppCompatActivity {
             case '^':
                 return 3;
         }
+
         return -1;
     }
 }
